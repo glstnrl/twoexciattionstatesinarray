@@ -48,18 +48,19 @@ end
 H=Omega-(1i/2)*Gamma;
 [dipolemagarr,Energy]=eig(H);
 dipolemag=dipolemagarr(:,modofsystem);
+nofdmag=N/2+0.5;
+flag=true;
 
 i=1;
 for teta=0:0.01:pi    
     for phi=0:0.01:2*pi
-        nofdmag=N/2+0.5;
         posS=[R*sin(teta)*cos(phi),R*sin(teta)*sin(phi),R*cos(teta)];
             absR1=posS-[0,0,0];
             d1=sqrt(sum(absR1.^2));
             teta1=acos(absR1(3)/d1);
             phi1=atan2(absR1(2),absR1(1));
             sinterm1=norm(cross(absR1,dvec))/d1;
-            q0=dipolemag(nofdmag);
+            q0=real(dipolemag(nofdmag));
             E1=q0*((sinterm1*cos(-d1*k))/d1);
             B1=q0*((sinterm1*cos(-d1*k))/d1);
             E1vec=[E1*cos(teta1)*cos(phi1),E1*cos(teta1)*sin(phi1),-E1*sin(teta1)];
@@ -67,6 +68,10 @@ for teta=0:0.01:pi
             Evec=Evec+E1vec;
             Bvec=Bvec+B1vec;
         for d=0:0.4*lamda:lamda*2
+            if flag
+                nofdmag1=nofdmag;
+                nofdmag2=nofdmag;
+            end
             posS=[R*sin(teta)*cos(phi),R*sin(teta)*sin(phi),R*cos(teta)];
             absR1=posS-[d/2,0,0];
             absR2=posS-[-d/2,0,0];
@@ -80,8 +85,8 @@ for teta=0:0.01:pi
             sinterm2=norm(cross(absR2,dvec))/d2;
             nofdmag1=nofdmag+1;
             nofdmag2=nofdmag-1;
-            q1=dipolemag(nofdmag1);
-            q2=dipolemag(nofdmag2);
+            q1=real(dipolemag(nofdmag1));
+            q2=real(dipolemag(nofdmag2));
             E1=q1*((sinterm1*cos(-d1*k))/d1);
             E2=q2*((sinterm2*cos(-d2*k))/d2);
             B1=((sinterm1*cos(-d1*k))/d1);
