@@ -23,8 +23,8 @@ w=k*c;
 rvec=[1,0,0];
 mudotr=dot(rvec,dvec);
 
-N=11;     %console2
-endi=lamda;
+N=41;     %console2
+endi=20*lamda;
 beg=-endi;
 aralik=(endi-beg)/(N-1);
 modofsystem=2;
@@ -68,11 +68,11 @@ for phi=0:0.01:2*pi
             absR=posS-[d,0,0];
             d1=sqrt(sum(absR.^2));
             absoluteR=absR/d1;
-            sinterm=norm(cross(absR,dvec))/d1;
+            %sinterm=norm(cross(absR,dvec))/d1;
             q0=abs(dipolemag(nofdmag));
             pha=angle(dipolemag(nofdmag));
-            E1vec=cross(cross(dvec,absoluteR),absoluteR)*q0*sinterm*cos(-(w*d1)/c+pha);
-            B1vec=cross(dvec,absoluteR)*q0*sinterm*cos(-(w*d1)/c+pha);
+            E1vec=cross(cross(dvec,absoluteR),absoluteR)*q0/d1*cos(-(w*d1)/c+pha);
+            B1vec=cross(dvec,absoluteR)*q0/d1*cos(-(w*d1)/c+pha);
             Evec=Evec+E1vec;
             Bvec=Bvec+B1vec;
             
