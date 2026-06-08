@@ -24,10 +24,10 @@ rvec=[1,0,0];
 mudotr=dot(rvec,dvec);
 
 N=41;     %console2
-endi=20*lamda;
+endi=lamda;
 beg=-endi;
 aralik=(endi-beg)/(N-1);
-modofsystem=2;
+modofsystem=1;
 
 H=zeros(N,N);
 Omega=zeros(N,N);
@@ -54,16 +54,13 @@ dipolemag=dipolemagarr(:,modofsystem);
 nofdmag=1;    
 i=1;
 
-if rem(N,2)~=0
-    ind=N/2.+0.5;
-else
-    ind=N/2+1;
-end
+positions=linspace(beg,endi,N);
 
 for phi=0:0.01:2*pi
      for teta=0:0.01:pi
-         for d=beg:aralik:endi
-            nofdmag=d/aralik+ind;
+         for n=1:N
+            d=positions(n);
+            nofdmag=n;
             posS=[R*sin(teta)*cos(phi),R*sin(teta)*sin(phi),R*cos(teta)];
             absR=posS-[d,0,0];
             d1=sqrt(sum(absR.^2));
@@ -71,8 +68,8 @@ for phi=0:0.01:2*pi
             %sinterm=norm(cross(absR,dvec))/d1;
             q0=abs(dipolemag(nofdmag));
             pha=angle(dipolemag(nofdmag));
-            E1vec=cross(cross(dvec,absoluteR),absoluteR)*q0/d1*cos(-(w*d1)/c+pha);
-            B1vec=cross(dvec,absoluteR)*q0/d1*cos(-(w*d1)/c+pha);
+            E1vec=cross(cross(dvec,absoluteR),absoluteR)*(1/d1)*q0*cos(-(w*d1)/c+pha);
+            B1vec=cross(dvec,absoluteR)*(1/d1)*q0*cos(-(w*d1)/c+pha);
             Evec=Evec+E1vec;
             Bvec=Bvec+B1vec;
             
